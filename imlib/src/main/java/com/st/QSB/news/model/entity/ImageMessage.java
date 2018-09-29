@@ -16,7 +16,7 @@ import com.st.QSB.news.ui.activity.ImageViewActivity;
 import com.st.QSB.news.ui.adapter.ChatAdapter;
 import com.st.QSB.news.utils.FileUtils;
 import com.st.QSB.news.utils.IManager;
-import com.st.qsb.im.R;
+import com.st.SQB.R;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMImage;
 import com.tencent.TIMImageElem;

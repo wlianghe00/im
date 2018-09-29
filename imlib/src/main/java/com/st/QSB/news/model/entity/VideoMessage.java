@@ -10,12 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.st.QSB.R;
-import com.st.QSB.news.ISATApplication;
 import com.st.QSB.news.ui.activity.VideoActivity;
 import com.st.QSB.news.ui.adapter.ChatAdapter;
 import com.st.QSB.news.utils.FileUtils;
+import com.st.QSB.news.utils.IManager;
 import com.st.QSB.news.utils.MediaUtil;
+import com.st.SQB.R;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMMessage;
 import com.tencent.TIMSnapshot;
@@ -114,7 +114,7 @@ public class VideoMessage extends Message {
      */
     @Override
     public String getSummary() {
-        return ISATApplication.getInstance().getString(R.string.summary_video);
+        return IManager.getInstance().getApplication().getString(R.string.summary_video);
     }
 
     /**
@@ -131,7 +131,7 @@ public class VideoMessage extends Message {
      */
     private void showSnapshot(final ChatAdapter.ViewHolder viewHolder,final Bitmap bitmap){
         if (bitmap == null) return;
-        ImageView imageView = new ImageView(ISATApplication.getInstance());
+        ImageView imageView = new ImageView(IManager.getInstance().getApplication());
         imageView.setImageBitmap(bitmap);
         getBubbleView(viewHolder).addView(imageView);
     }

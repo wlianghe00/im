@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.st.QSB.R;
-import com.st.QSB.news.ISATApplication;
 import com.st.QSB.news.ui.adapter.ChatAdapter;
 import com.st.QSB.news.utils.FileUtils;
+import com.st.QSB.news.utils.IManager;
 import com.st.QSB.news.utils.MediaUtil;
+import com.st.SQB.R;
 import com.tencent.TIMMessage;
 import com.tencent.TIMSoundElem;
 import com.tencent.TIMValueCallBack;
@@ -72,16 +72,16 @@ public class VoiceMessage extends Message {
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
-        LinearLayout linearLayout = new LinearLayout(ISATApplication.getInstance());
+        LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
-        ImageView voiceIcon = new ImageView(ISATApplication.getInstance());
+        ImageView voiceIcon = new ImageView(context);
         voiceIcon.setBackgroundResource(message.isSelf()?R.drawable.right_voice: R.drawable.left_voice);
         final AnimationDrawable frameAnimatio = (AnimationDrawable) voiceIcon.getBackground();
 
-        TextView tv = new TextView(ISATApplication.getInstance());
+        TextView tv = new TextView(context);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        tv.setTextColor(ISATApplication.getInstance().getResources().getColor(isSelf() ? R.color.white : R.color.black));
+        tv.setTextColor(context.getResources().getColor(isSelf() ? android.R.color.white : android.R.color.black));
         tv.setText(String.valueOf(((TIMSoundElem) message.getElement(0)).getDuration()) + "’");
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, context.getResources().getDisplayMetrics());
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, context.getResources().getDisplayMetrics());
@@ -119,7 +119,7 @@ public class VoiceMessage extends Message {
      */
     @Override
     public String getSummary() {
-        return ISATApplication.getInstance().getString(R.string.summary_voice);
+        return IManager.getInstance().getApplication().getString(R.string.summary_voice);
     }
 
     /**
