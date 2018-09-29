@@ -1,2 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.st.SQB" />
+    package="com.st.SQB">
+
+    <application android:theme="@style/baseTheme">
+        <activity
+            android:name="com.st.QSB.news.ui.activity.ChatActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.st.QSB.news.ui.activity.ImagePreviewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.st.QSB.news.ui.activity.VideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.st.QSB.news.ui.activity.ImageViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+    </application>
+
+
+</manifest>
