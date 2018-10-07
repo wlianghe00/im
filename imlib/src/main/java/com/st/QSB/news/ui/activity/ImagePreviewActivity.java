@@ -28,8 +28,8 @@ public class ImagePreviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
         path = getIntent().getStringExtra("path");
-        isOri = (CheckBox) findViewById(R.id.isOri);
-        TemplateTitle title = (TemplateTitle) findViewById(R.id.imagePreviewTitle);
+        isOri =  findViewById(R.id.isOri);
+        TemplateTitle title = findViewById(R.id.imagePreviewTitle);
         title.setMoreTextAction(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.st.QSB.news.ui.adapter.ChatAdapter;
+import com.st.SQB.R;
 import com.tencent.TIMElem;
 import com.tencent.TIMElemType;
 import com.tencent.TIMFaceElem;
@@ -101,8 +102,9 @@ public class TextMessage extends Message {
 
         boolean hasText = false;
         TextView tv = new TextView(context);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        tv.setTextColor(context.getResources().getColor(isSelf() ? android.R.color.white : android.R.color.black));
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//        tv.setTextColor(context.getResources().getColor(isSelf() ? android.R.color.white : android.R.color.black));
+        tv.setTextColor(context.getResources().getColor(R.color.black_default));
         List<TIMElem> elems = new ArrayList<>();
         for (int i = 0; i < message.getElementCount(); ++i){
             elems.add(message.getElement(i));

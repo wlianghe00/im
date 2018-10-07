@@ -76,7 +76,7 @@ public interface ChatView {
      * 结束发送语音消息
      *
      */
-    void endSendVoice();
+    void endSendVoice(boolean send);
 
 
     /**

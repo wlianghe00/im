@@ -2,4 +2,6 @@
 <resources>
     <color name="colorMask">#66000000</color>
     <color name="panel_black">#25272A</color>
+    <color name="voice_default_color">#9b9b9b</color>
+    <color name="black_default">#333333</color>
 </resources>

@@ -55,19 +55,21 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int IMAGE_STORE = 200;
     private static final int IMAGE_PREVIEW = 400;
-    private Uri fileUri;
     private VoiceSendingView voiceSendingView;
     private String identify;
     private RecorderUtil recorder = new RecorderUtil();
     private TIMConversationType type;
     private String titleStr;
     private Handler handler = new Handler();
+    private String imgPath;
 
+    private boolean customer = false;
 
-    public static void navToChat(Context context, String identify, TIMConversationType type) {
+    public static void navToChat(Context context, String identify, TIMConversationType type, boolean customer) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
+        intent.putExtra("customer", customer);
         context.startActivity(intent);
     }
 
@@ -78,6 +80,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         identify = getIntent().getStringExtra("identify");
+        customer = getIntent().getBooleanExtra("customer", customer);
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         presenter = new ChatPresenter(this, identify, type);
         input = findViewById(R.id.input_panel);
@@ -107,7 +110,6 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0) {
                     //如果拉到顶端读取更多消息
                     presenter.getMessage(messageList.size() > 0 ? messageList.get(0).getMessage() : null);
-
                 }
             }
 
@@ -117,9 +119,20 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             }
         });
         registerForContextMenu(listView);
-        titleView.setTitleText(titleStr = identify);
+        titleStr = customer ? "在线客服" : "技师在线";
+        titleView.setTitleText(titleStr);
+//        titleView.setTitleText(titleStr = identify);
         voiceSendingView = findViewById(R.id.voice_sending);
         presenter.start();
+        if(customer) {
+            titleView.setMoreImg(R.drawable.ic_phone);
+            titleView.setMoreImgAction(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -270,10 +283,11 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         if (intent_photo.resolveActivity(getPackageManager()) != null) {
             File tempFile = FileUtils.getTempFile(FileUtils.FileType.IMG);
             if (tempFile != null) {
-                fileUri = Uri.fromFile(tempFile);
+                imgPath = tempFile.getAbsolutePath();
+                Uri fileUri = FileUtils.getUri(tempFile.getAbsolutePath(), this);
+                intent_photo.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                startActivityForResult(intent_photo, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
-            intent_photo.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(intent_photo, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
@@ -303,15 +317,17 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 结束发送语音消息
      */
     @Override
-    public void endSendVoice() {
+    public void endSendVoice(boolean send) {
         voiceSendingView.release();
         voiceSendingView.setVisibility(View.GONE);
         recorder.stopRecording();
-        if (recorder.getTimeInterval() < 1) {
-            Toast.makeText(this, getResources().getString(R.string.chat_audio_too_short), Toast.LENGTH_SHORT).show();
-        } else {
-            Message message = new VoiceMessage(recorder.getTimeInterval(), recorder.getFilePath());
-            presenter.sendMessage(message.getMessage());
+        if(send) {
+            if (recorder.getTimeInterval() < 1) {
+                Toast.makeText(this, getResources().getString(R.string.chat_audio_too_short), Toast.LENGTH_SHORT).show();
+            } else {
+                Message message = new VoiceMessage(recorder.getTimeInterval(), recorder.getFilePath());
+                presenter.sendMessage(message.getMessage());
+            }
         }
     }
 
@@ -367,9 +383,9 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         if (message instanceof ImageMessage) {
             menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
         }
-        if (message.isSelf()) {
-            menu.add(0, 4, Menu.NONE, getString(R.string.chat_revoke));
-        }
+//        if (message.isSelf()) {
+//            menu.add(0, 4, Menu.NONE, getString(R.string.chat_revoke));
+//        }
     }
 
 
@@ -398,8 +414,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && fileUri != null) {
-                showImagePreview(fileUri.getPath());
+            if (resultCode == RESULT_OK && imgPath != null) {
+                showImagePreview(imgPath);
             }
         } else if (requestCode == IMAGE_STORE) {
             if (resultCode == RESULT_OK && data != null) {

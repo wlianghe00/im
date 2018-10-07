@@ -9,8 +9,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+
+import com.st.SQB.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -33,6 +36,15 @@ public class FileUtils {
     private FileUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
+    }
+
+    public static Uri getUri(String path, Context context) {
+        File file = new File(path);
+        Uri uri = Uri.fromFile(file);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(context, "com.st.SQB.provider", file);
+        }
+        return uri;
     }
 
     public static void deleteAllFilesOfDir(File path) {

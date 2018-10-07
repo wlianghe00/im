@@ -80,8 +80,9 @@ public class VoiceMessage extends Message {
         final AnimationDrawable frameAnimatio = (AnimationDrawable) voiceIcon.getBackground();
 
         TextView tv = new TextView(context);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        tv.setTextColor(context.getResources().getColor(isSelf() ? android.R.color.white : android.R.color.black));
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//        tv.setTextColor(context.getResources().getColor(isSelf() ? android.R.color.white : android.R.color.black));
+        tv.setTextColor(context.getResources().getColor(R.color.black_default));
         tv.setText(String.valueOf(((TIMSoundElem) message.getElement(0)).getDuration()) + "’");
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, context.getResources().getDisplayMetrics());
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, context.getResources().getDisplayMetrics());
