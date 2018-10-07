@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.st.QSB.news.ui.adapter.ChatAdapter;
-import com.st.QSB.news.utils.TimeUtil;
+import com.st.QSB.news.utils.TimeUtils;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageStatus;
@@ -49,7 +49,7 @@ public abstract class Message {
      */
     public RelativeLayout getBubbleView(ChatAdapter.ViewHolder viewHolder){
         viewHolder.systemMessage.setVisibility(hasTime?View.VISIBLE:View.GONE);
-        viewHolder.systemMessage.setText(TimeUtil.getChatTimeStr(message.timestamp()));
+        viewHolder.systemMessage.setText(TimeUtils.getChatTimeStr(message.timestamp()));
         showDesc(viewHolder);
         if (message.isSelf()){
             viewHolder.leftPanel.setVisibility(View.GONE);

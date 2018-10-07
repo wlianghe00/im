@@ -9,10 +9,10 @@ import java.util.Date;
 /**
  * 时间转换工具
  */
-public class TimeUtil {
+public class TimeUtils {
 
 
-    private TimeUtil(){}
+    private TimeUtils(){}
 
     /**
      * 时间转化为聊天界面显示字符串
