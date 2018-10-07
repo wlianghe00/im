@@ -122,7 +122,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         switch (inputMode = mode) {
             case MORE:
                 morePanel.setVisibility(VISIBLE);
-                btnAdd.setBackgroundResource(R.drawable.ic_close);
+                btnAdd.setBackgroundResource(R.drawable.ic_im_close);
                 break;
 
             case TEXT:
