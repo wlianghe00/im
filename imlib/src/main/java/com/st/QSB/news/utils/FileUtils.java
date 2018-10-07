@@ -42,7 +42,7 @@ public class FileUtils {
         File file = new File(path);
         Uri uri = Uri.fromFile(file);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context, "com.st.SQB.provider", file);
+            uri = FileProvider.getUriForFile(context, "com.st.wy.provider", file);
         }
         return uri;
     }
