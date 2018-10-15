@@ -13,7 +13,7 @@ import com.st.QSB.news.model.entity.CustomMessage;
 import com.st.QSB.news.model.entity.Message;
 import com.st.QSB.news.model.entity.MessageFactory;
 import com.st.QSB.news.model.event.MessageEvent;
-import com.st.QSB.news.ui.activity.ChatActivity;
+import com.st.QSB.news.ui.activity.ConversationActivity;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupReceiveMessageOpt;
 import com.tencent.TIMMessage;
@@ -62,7 +62,7 @@ public class PushUtil implements Observer {
         Log.d(TAG, "recv msg " + contentStr);
         NotificationManager mNotificationManager = (NotificationManager) application.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(application);
-        Intent notificationIntent = new Intent(application, ChatActivity.class);
+        Intent notificationIntent = new Intent(application, ConversationActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(application, 0, notificationIntent, 0);
         mBuilder.setContentTitle(senderStr)//设置通知栏标题
