@@ -3,6 +3,13 @@
     package="com.st.SQB">
 
     <application>
+
+        <activity
+            android:name="com.st.QSB.news.ui.activity.ConversationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/baseTheme" />
+
         <activity
             android:name="com.st.QSB.news.ui.activity.ChatActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -32,13 +39,11 @@
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
-            tools:replace="android:authorities"
-            >
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"
-                tools:replace="android:resource"
-                />
+                tools:replace="android:resource" />
         </provider>
 
     </application>

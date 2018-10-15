@@ -32,7 +32,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/head_other" />
+                android:src="@drawable/ic_head" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/head_me" />
+                android:src="@drawable/ic_head" />
 
             <RelativeLayout
                 android:id="@+id/rightMessage"

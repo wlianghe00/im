@@ -63,13 +63,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private Handler handler = new Handler();
     private String imgPath;
 
-    private boolean customer = false;
+    private int userType;
 
-    public static void navToChat(Context context, String identify, TIMConversationType type, boolean customer) {
+    public static void navToChat(Context context, String identify, TIMConversationType type, int userType) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
-        intent.putExtra("customer", customer);
+        intent.putExtra("userType", userType);
         context.startActivity(intent);
     }
 
@@ -80,7 +80,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         identify = getIntent().getStringExtra("identify");
-        customer = getIntent().getBooleanExtra("customer", customer);
+        userType = getIntent().getIntExtra("userType", 0);
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         presenter = new ChatPresenter(this, identify, type);
         input = findViewById(R.id.input_panel);
@@ -119,12 +119,12 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             }
         });
         registerForContextMenu(listView);
-        titleStr = customer ? "在线客服" : "技师在线";
+        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? identify :"技师在线");
         titleView.setTitleText(titleStr);
 //        titleView.setTitleText(titleStr = identify);
         voiceSendingView = findViewById(R.id.voice_sending);
         presenter.start();
-        if(customer) {
+        if(userType == 0) {
             titleView.setMoreImg(R.drawable.ic_phone);
             titleView.setMoreImgAction(new View.OnClickListener() {
                 @Override
