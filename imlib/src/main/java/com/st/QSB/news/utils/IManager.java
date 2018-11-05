@@ -22,6 +22,9 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
     private static IManager manager = new IManager();
     private String userId;
     private String userSig;
+
+    private boolean managerVer = false;  //是否是管理员版本
+
     public static IManager getInstance() {
         return manager;
     }
@@ -34,11 +37,20 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
         return application;
     }
 
+    public boolean isManagerVer() {
+        return managerVer;
+    }
+
     public void init(Application app, final int resId, int SDK_APPID, int ACCOUNT_TYPE) {
+        init(app, resId, SDK_APPID, ACCOUNT_TYPE, false);
+    }
+
+    public void init(Application app, final int resId, int SDK_APPID, int ACCOUNT_TYPE, boolean managerVer) {
         application = app;
         this.resId = resId;
         this.SDK_APPID = SDK_APPID;
         this.ACCOUNT_TYPE = ACCOUNT_TYPE;
+        this.managerVer = managerVer;
         if(MsfSdkUtils.isMainProcess(application)) {
             // 设置离线推送监听器
             TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
@@ -51,7 +63,7 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
         }
     }
 
-    public void initTim(String userId, String userSig) {
+    private void initTim(String userId, String userSig) {
         this.userId = userId;
         this.userSig = userSig;
         Log.e(IManager.class.getSimpleName(), "开始初始化腾讯im:" + userId + "---" + userSig);

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.st.QSB.news.utils.IManager;
 import com.st.SQB.R;
 
 
@@ -44,6 +45,12 @@ public class TemplateTitle extends RelativeLayout {
     }
 
     private void setUpView(){
+        if(IManager.getInstance().isManagerVer()) {
+            setBackgroundResource(R.color.skill_main);
+        } else {
+            setBackgroundResource(R.drawable.bg_title_chat);
+        }
+
         TextView tvTitle = (TextView) findViewById(R.id.title);
         tvTitle.setText(titleText);
         LinearLayout backBtn = (LinearLayout) findViewById(R.id.title_back);
