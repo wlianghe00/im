@@ -30,7 +30,7 @@ public class TemplateTitle extends RelativeLayout {
 
     public TemplateTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.title, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.title, this);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TemplateTitle, 0, 0);
         try {
             titleText = ta.getString(R.styleable.TemplateTitle_titleText);
@@ -42,15 +42,14 @@ public class TemplateTitle extends RelativeLayout {
         } finally {
             ta.recycle();
         }
+        if(IManager.getInstance().isManagerVer()) {
+            view.setBackgroundResource(R.color.skill_main);
+        } else {
+            view.setBackgroundResource(R.drawable.bg_title_chat);
+        }
     }
 
     private void setUpView(){
-        if(IManager.getInstance().isManagerVer()) {
-            setBackgroundResource(R.color.skill_main);
-        } else {
-            setBackgroundResource(R.drawable.bg_title_chat);
-        }
-
         TextView tvTitle = (TextView) findViewById(R.id.title);
         tvTitle.setText(titleText);
         LinearLayout backBtn = (LinearLayout) findViewById(R.id.title_back);
