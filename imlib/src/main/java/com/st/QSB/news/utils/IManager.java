@@ -63,7 +63,7 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
         }
     }
 
-    private void initTim(String userId, String userSig) {
+    public void initTim(String userId, String userSig) {
         this.userId = userId;
         this.userSig = userSig;
         Log.e(IManager.class.getSimpleName(), "开始初始化腾讯im:" + userId + "---" + userSig);
