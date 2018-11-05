@@ -19,6 +19,7 @@ import com.st.QSB.news.model.entity.NomalConversation;
 import com.st.QSB.news.presenter.ConversationPresenter;
 import com.st.QSB.news.ui.adapter.ConversationAdapter;
 import com.st.QSB.news.ui.widget.ConversationView;
+import com.st.QSB.news.ui.widget.TemplateTitle;
 import com.st.QSB.news.utils.PushUtil;
 import com.st.SQB.R;
 import com.tencent.TIMConversation;
@@ -45,7 +46,6 @@ public class ConversationFragment extends Fragment implements ConversationView {
     private ListView listView;
     private ConversationPresenter presenter;
     private List<String> groupList;
-
 
 
     public ConversationFragment() {

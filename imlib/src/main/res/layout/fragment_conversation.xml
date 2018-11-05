@@ -5,9 +5,12 @@
     android:orientation="vertical">
 
     <com.st.QSB.news.ui.widget.TemplateTitle
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="在线消息" />
+        app:titleText="在线消息"
+        app:canBack="true"
+        />
 
     <ListView
         android:id="@id/list"
