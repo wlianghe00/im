@@ -31,8 +31,8 @@ public class ChatAdapter extends ArrayAdapter<Message> {
     private View view;
     private ViewHolder viewHolder;
 
-    public String leftAva;
-    public String rightAva;
+    private String leftAva;
+    private String rightAva;
 
     @Override
     public boolean hasStableIds() {
@@ -56,8 +56,6 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         super(context, resource, objects);
         resourceId = resource;
         this.rightAva = rightAva;
-        if(TextUtils.isEmpty(this.leftAva)) this.leftAva = "";
-        if(TextUtils.isEmpty(this.rightAva)) this.rightAva = "";
     }
 
     public void setLeftAva(String leftAva) {
@@ -91,10 +89,12 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             data.showMessage(viewHolder, getContext());
         }
 
+        if(TextUtils.isEmpty(this.rightAva)) this.rightAva = "";
+        if(TextUtils.isEmpty(this.leftAva)) this.leftAva = "";
         Glide.with(view.getContext()).load(Uri.parse(leftAva)).diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop().placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.leftAvatar);
+                .placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.leftAvatar);
         Glide.with(view.getContext()).load(Uri.parse(rightAva)).diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop().placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.rightAvatar);
+                .placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.rightAvatar);
         return view;
     }
 

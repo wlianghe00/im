@@ -92,7 +92,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         sendRequest();
         userType = getIntent().getIntExtra("userType", 0);
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
-        selfAav = getIntent().getStringExtra("selfAav");
+        selfAav = getIntent().getStringExtra("selfAva");
         presenter = new ChatPresenter(this, identify, type);
         input = findViewById(R.id.input_panel);
         input.setChatView(this);
