@@ -1,6 +1,8 @@
 package com.st.QSB.news.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.st.QSB.news.model.entity.Message;
 import com.st.SQB.R;
 
@@ -26,6 +30,9 @@ public class ChatAdapter extends ArrayAdapter<Message> {
     private int resourceId;
     private View view;
     private ViewHolder viewHolder;
+
+    public String leftAva;
+    public String rightAva;
 
     @Override
     public boolean hasStableIds() {
@@ -45,9 +52,13 @@ public class ChatAdapter extends ArrayAdapter<Message> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ChatAdapter(Context context, int resource, List<Message> objects) {
+    public ChatAdapter(Context context, int resource, List<Message> objects, String leftAva, String rightAva) {
         super(context, resource, objects);
         resourceId = resource;
+        this.leftAva = leftAva;
+        this.rightAva = rightAva;
+        if(TextUtils.isEmpty(this.leftAva)) this.leftAva = "";
+        if(TextUtils.isEmpty(this.rightAva)) this.rightAva = "";
     }
 
     @Override
@@ -67,6 +78,8 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             viewHolder.sender = (TextView) view.findViewById(R.id.sender);
             viewHolder.rightDesc = (TextView) view.findViewById(R.id.rightDesc);
             viewHolder.systemMessage = (TextView) view.findViewById(R.id.systemMessage);
+            viewHolder.leftAvatar = view.findViewById(R.id.leftAvatar);
+            viewHolder.rightAvatar = view.findViewById(R.id.rightAvatar);
             view.setTag(viewHolder);
         }
         if (position < getCount()){
@@ -74,6 +87,10 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             data.showMessage(viewHolder, getContext());
         }
 
+        Glide.with(view.getContext()).load(Uri.parse(leftAva)).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop().placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.leftAvatar);
+        Glide.with(view.getContext()).load(Uri.parse(rightAva)).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop().placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.rightAvatar);
         return view;
     }
 
@@ -88,5 +105,7 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         public TextView sender;
         public TextView systemMessage;
         public TextView rightDesc;
+        public ImageView leftAvatar;
+        public ImageView rightAvatar;
     }
 }

@@ -64,12 +64,18 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private String imgPath;
 
     private int userType;
+    private String name;
+    private String avator;
+    private String selfAav;
 
-    public static void navToChat(Context context, String identify, TIMConversationType type, int userType) {
+    public static void navToChat(Context context, String identify, TIMConversationType type, int userType, String name, String avator, String selfAva) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
         intent.putExtra("userType", userType);
+        intent.putExtra("name", name);
+        intent.putExtra("avator", avator);
+        intent.putExtra("selfAva", selfAva);
         context.startActivity(intent);
     }
 
@@ -82,11 +88,15 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         identify = getIntent().getStringExtra("identify");
         userType = getIntent().getIntExtra("userType", 0);
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
+        name = getIntent().getStringExtra("name");
+        if(name == null) name = "";
+        avator = getIntent().getStringExtra("avator");
+        selfAav = getIntent().getStringExtra("selfAav");
         presenter = new ChatPresenter(this, identify, type);
         input = findViewById(R.id.input_panel);
         input.setChatView(this);
         titleView = findViewById(R.id.titleView);
-        adapter = new ChatAdapter(this, R.layout.item_message, messageList);
+        adapter = new ChatAdapter(this, R.layout.item_message, messageList, avator, selfAav);
         listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
@@ -119,9 +129,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             }
         });
         registerForContextMenu(listView);
-        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? identify :"技师在线");
+        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? avator :"技师在线");
         titleView.setTitleText(titleStr);
-//        titleView.setTitleText(titleStr = identify);
         voiceSendingView = findViewById(R.id.voice_sending);
         presenter.start();
         if(userType == 0) {

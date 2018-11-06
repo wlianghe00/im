@@ -43,8 +43,8 @@ public class NomalConversation extends Conversation {
      * @param context 跳转上下文
      */
     @Override
-    public void navToDetail(Context context, int userType) {
-        ChatActivity.navToChat(context,identify,type, userType);
+    public void navToDetail(Context context, int userType, String selfAva) {
+        ChatActivity.navToChat(context,identify,type, userType, name, avator, selfAva);
     }
 
     /**
@@ -70,8 +70,6 @@ public class NomalConversation extends Conversation {
      */
     @Override
     public String getName() {
-        FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
-        name=profile == null?identify:profile.getName();
         return name;
     }
 

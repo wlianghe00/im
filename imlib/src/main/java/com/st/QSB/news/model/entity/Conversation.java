@@ -47,7 +47,7 @@ public abstract class Conversation implements Comparable {
      *
      * @param context 跳转上下文
      */
-    abstract public void navToDetail(Context context, int userType);
+    abstract public void navToDetail(Context context, int userType, String selfAva);
 
     /**
      * 获取最后一条消息摘要

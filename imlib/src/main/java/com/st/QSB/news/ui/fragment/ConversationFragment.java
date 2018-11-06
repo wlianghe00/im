@@ -52,6 +52,7 @@ public class ConversationFragment extends Fragment implements ConversationView {
     private ConversationPresenter presenter;
     private List<String> groupList;
 
+    public String selfAva;
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -61,6 +62,10 @@ public class ConversationFragment extends Fragment implements ConversationView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            selfAva = bundle.getString("selfAva");
+        }
     }
 
     @Override
@@ -73,7 +78,7 @@ public class ConversationFragment extends Fragment implements ConversationView {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    conversationList.get(position).navToDetail(getActivity(), 1);
+                    conversationList.get(position).navToDetail(getActivity(), 1, selfAva);
                 }
             });
             presenter = new ConversationPresenter(this);
