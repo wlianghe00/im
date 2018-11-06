@@ -15,6 +15,10 @@ public class NomalConversation extends Conversation {
     //最后一条消息
     private Message lastMessage;
 
+    public String avator;  //头像
+    public String userId;
+    public int userType;
+
 
     public NomalConversation(TIMConversation conversation){
         this.conversation = conversation;
@@ -29,8 +33,8 @@ public class NomalConversation extends Conversation {
 
 
     @Override
-    public int getAvatar() {
-        return R.drawable.ic_head;
+    public String getAvatar() {
+        return avator;
     }
 
     /**

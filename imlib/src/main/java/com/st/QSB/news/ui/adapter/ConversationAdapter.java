@@ -1,13 +1,18 @@
 package com.st.QSB.news.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.st.QSB.news.model.entity.Conversation;
+import com.st.QSB.news.model.entity.NomalConversation;
 import com.st.QSB.news.ui.widget.CircleImageView;
 import com.st.QSB.news.utils.TimeUtils;
 import com.st.SQB.R;
@@ -18,7 +23,7 @@ import java.util.List;
 /**
  * 会话界面adapter
  */
-public class ConversationAdapter extends ArrayAdapter<Conversation> {
+public class ConversationAdapter extends ArrayAdapter<NomalConversation> {
 
     private int resourceId;
     private View view;
@@ -32,7 +37,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects) {
+    public ConversationAdapter(Context context, int resource, List<NomalConversation> objects) {
         super(context, resource, objects);
         resourceId = resource;
     }
@@ -54,7 +59,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         }
         final Conversation data = getItem(position);
         viewHolder.tvName.setText(data.getName());
-        viewHolder.avatar.setImageResource(data.getAvatar());
+        String ava = data.getAvatar();
+        if(TextUtils.isEmpty(ava)) ava = "";
+        Glide.with(view.getContext()).load(Uri.parse(ava)).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop().placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.avatar);
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtils.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();

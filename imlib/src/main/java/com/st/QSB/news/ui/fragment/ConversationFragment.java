@@ -2,6 +2,7 @@ package com.st.QSB.news.ui.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.st.QSB.news.model.entity.Conversation;
 import com.st.QSB.news.model.entity.CustomMessage;
 import com.st.QSB.news.model.entity.MessageFactory;
 import com.st.QSB.news.model.entity.NomalConversation;
+import com.st.QSB.news.model.event.AccountsEvent;
 import com.st.QSB.news.presenter.ConversationPresenter;
 import com.st.QSB.news.ui.adapter.ConversationAdapter;
 import com.st.QSB.news.ui.widget.ConversationView;
@@ -26,6 +28,9 @@ import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +46,7 @@ public class ConversationFragment extends Fragment implements ConversationView {
     private final String TAG = "ConversationFragment";
 
     private View view;
-    private List<Conversation> conversationList = new LinkedList<>();
+    private List<NomalConversation> conversationList = new LinkedList<>();
     private ConversationAdapter adapter;
     private ListView listView;
     private ConversationPresenter presenter;
@@ -52,6 +57,11 @@ public class ConversationFragment extends Fragment implements ConversationView {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -119,11 +129,11 @@ public class ConversationFragment extends Fragment implements ConversationView {
         }
         if (MessageFactory.getMessage(message) instanceof CustomMessage) return;
         NomalConversation conversation = new NomalConversation(message.getConversation());
-        Iterator<Conversation> iterator = conversationList.iterator();
+        Iterator<NomalConversation> iterator = conversationList.iterator();
         while (iterator.hasNext()) {
-            Conversation c = iterator.next();
+            NomalConversation c = iterator.next();
             if (conversation.equals(c)) {
-                conversation = (NomalConversation) c;
+                conversation = c;
                 iterator.remove();
                 break;
             }
@@ -142,9 +152,9 @@ public class ConversationFragment extends Fragment implements ConversationView {
      */
     @Override
     public void removeConversation(String identify) {
-        Iterator<Conversation> iterator = conversationList.iterator();
+        Iterator<NomalConversation> iterator = conversationList.iterator();
         while (iterator.hasNext()) {
-            Conversation conversation = iterator.next();
+            NomalConversation conversation = iterator.next();
             if (conversation.getIdentify() != null && conversation.getIdentify().equals(identify)) {
                 iterator.remove();
                 adapter.notifyDataSetChanged();
@@ -166,17 +176,14 @@ public class ConversationFragment extends Fragment implements ConversationView {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        Conversation conversation = conversationList.get(info.position);
-        if (conversation instanceof NomalConversation) {
-            menu.add(0, 1, Menu.NONE, "删除会话");
-        }
+        menu.add(0, 1, Menu.NONE, "删除会话");
     }
 
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        NomalConversation conversation = (NomalConversation) conversationList.get(info.position);
+        NomalConversation conversation = conversationList.get(info.position);
         switch (item.getItemId()) {
             case 1:
                 if (conversation != null) {
@@ -194,11 +201,19 @@ public class ConversationFragment extends Fragment implements ConversationView {
 
     private long getTotalUnreadNum() {
         long num = 0;
-        for (Conversation conversation : conversationList) {
+        for (NomalConversation conversation : conversationList) {
             num += conversation.getUnreadNum();
         }
         return num;
     }
 
+    @Subscribe
+    public void onEvent(AccountsEvent event) {
+        List<NomalConversation> accounts = event.data;
+        if(accounts != null && accounts.size() > 0) {
+            presenter.updateData(accounts, conversationList);
+            adapter.notifyDataSetChanged();
+        }
+    }
 
 }

@@ -16,7 +16,7 @@ public abstract class Conversation implements Comparable {
     protected TIMConversationType type;
 
     //会话对象名称
-    protected String name;
+    public String name;
 
 
     /**
@@ -39,7 +39,7 @@ public abstract class Conversation implements Comparable {
     /**
      * 获取头像
      */
-    abstract public int getAvatar();
+    abstract public String getAvatar();
 
 
     /**
