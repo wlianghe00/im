@@ -221,4 +221,9 @@ public class ConversationFragment extends Fragment implements ConversationView {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

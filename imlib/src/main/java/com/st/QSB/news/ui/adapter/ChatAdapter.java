@@ -52,13 +52,17 @@ public class ChatAdapter extends ArrayAdapter<Message> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ChatAdapter(Context context, int resource, List<Message> objects, String leftAva, String rightAva) {
+    public ChatAdapter(Context context, int resource, List<Message> objects, String rightAva) {
         super(context, resource, objects);
         resourceId = resource;
-        this.leftAva = leftAva;
         this.rightAva = rightAva;
         if(TextUtils.isEmpty(this.leftAva)) this.leftAva = "";
         if(TextUtils.isEmpty(this.rightAva)) this.rightAva = "";
+    }
+
+    public void setLeftAva(String leftAva) {
+        this.leftAva = leftAva;
+        notifyDataSetChanged();
     }
 
     @Override

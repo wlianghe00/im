@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void go(View view) {
-        ChatActivity.navToChat(this, "admin1", TIMConversationType.C2C, 1, "", "", "");
+        ChatActivity.navToChat(this, "admin1", TIMConversationType.C2C, 1, "");
     }
 
     public void go1(View view) {

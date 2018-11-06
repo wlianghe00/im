@@ -3,7 +3,6 @@ package com.st.QSB.news.model.entity;
 import android.content.Context;
 
 import com.st.QSB.news.ui.activity.ChatActivity;
-import com.st.SQB.R;
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
 
@@ -44,7 +43,7 @@ public class NomalConversation extends Conversation {
      */
     @Override
     public void navToDetail(Context context, int userType, String selfAva) {
-        ChatActivity.navToChat(context,identify,type, userType, name, avator, selfAva);
+        ChatActivity.navToChat(context,identify,type, userType, selfAva);
     }
 
     /**

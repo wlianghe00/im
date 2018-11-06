@@ -22,9 +22,12 @@ import com.st.QSB.news.model.entity.CustomMessage;
 import com.st.QSB.news.model.entity.ImageMessage;
 import com.st.QSB.news.model.entity.Message;
 import com.st.QSB.news.model.entity.MessageFactory;
+import com.st.QSB.news.model.entity.NomalConversation;
 import com.st.QSB.news.model.entity.TextMessage;
 import com.st.QSB.news.model.entity.VideoMessage;
 import com.st.QSB.news.model.entity.VoiceMessage;
+import com.st.QSB.news.model.event.AccountRequestEvent;
+import com.st.QSB.news.model.event.AccountsEvent;
 import com.st.QSB.news.presenter.ChatPresenter;
 import com.st.QSB.news.ui.adapter.ChatAdapter;
 import com.st.QSB.news.ui.widget.ChatInput;
@@ -39,6 +42,9 @@ import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageDraft;
 import com.tencent.TIMMessageStatus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,17 +70,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private String imgPath;
 
     private int userType;
-    private String name;
-    private String avator;
     private String selfAav;
 
-    public static void navToChat(Context context, String identify, TIMConversationType type, int userType, String name, String avator, String selfAva) {
+    public static void navToChat(Context context, String identify, TIMConversationType type, int userType, String selfAva) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
         intent.putExtra("userType", userType);
-        intent.putExtra("name", name);
-        intent.putExtra("avator", avator);
         intent.putExtra("selfAva", selfAva);
         context.startActivity(intent);
     }
@@ -84,19 +86,18 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        EventBus.getDefault().register(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         identify = getIntent().getStringExtra("identify");
+        sendRequest();
         userType = getIntent().getIntExtra("userType", 0);
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
-        name = getIntent().getStringExtra("name");
-        if(name == null) name = "";
-        avator = getIntent().getStringExtra("avator");
         selfAav = getIntent().getStringExtra("selfAav");
         presenter = new ChatPresenter(this, identify, type);
         input = findViewById(R.id.input_panel);
         input.setChatView(this);
         titleView = findViewById(R.id.titleView);
-        adapter = new ChatAdapter(this, R.layout.item_message, messageList, avator, selfAav);
+        adapter = new ChatAdapter(this, R.layout.item_message, messageList, selfAav);
         listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
@@ -129,8 +130,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             }
         });
         registerForContextMenu(listView);
-        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? avator :"技师在线");
-        titleView.setTitleText(titleStr);
+        setTitle(identify);
         voiceSendingView = findViewById(R.id.voice_sending);
         presenter.start();
         if(userType == 0) {
@@ -142,6 +142,18 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 }
             });
         }
+    }
+
+    public void setTitle(String title) {
+        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? title :"技师在线");
+        titleView.setTitleText(titleStr);
+    }
+
+    private void sendRequest() {
+        AccountRequestEvent request = new AccountRequestEvent();
+        request.userIds = new ArrayList<>();
+        request.userIds.add(identify);
+        EventBus.getDefault().post(request);
     }
 
     @Override
@@ -163,8 +175,22 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     protected void onDestroy() {
         super.onDestroy();
         presenter.stop();
+        EventBus.getDefault().unregister(this);
     }
 
+    @Subscribe
+    public void onEvent(AccountsEvent event) {
+        List<NomalConversation> accounts = event.data;
+        if(accounts != null && accounts.size() > 0) {
+            for (NomalConversation conversation : accounts) {
+                if(conversation.userId.equals(identify)) {
+                    adapter.setLeftAva(conversation.avator);
+                    adapter.notifyDataSetChanged();
+                    setTitle(conversation.name);
+                }
+            }
+        }
+    }
 
     /**
      * 显示消息
@@ -474,5 +500,6 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
 
 }
