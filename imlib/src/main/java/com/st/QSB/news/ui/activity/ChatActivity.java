@@ -145,7 +145,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
     public void setTitle(String title) {
-        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? title :"技师在线");
+//        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? title :"技师在线");
+        titleStr = title;
         titleView.setTitleText(titleStr);
     }
 
