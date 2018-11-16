@@ -138,7 +138,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             titleView.setMoreImgAction(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    diallPhone("4008631686");
                 }
             });
         }
@@ -148,6 +148,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 //        titleStr = userType == 0 ? "在线客服" : (userType == 1 ? title :"技师在线");
         titleStr = title;
         titleView.setTitleText(titleStr);
+    }
+
+    public void diallPhone(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        startActivity(intent);
     }
 
     private void sendRequest() {

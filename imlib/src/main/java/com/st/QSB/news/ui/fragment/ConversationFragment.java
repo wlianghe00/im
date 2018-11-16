@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.st.QSB.news.model.entity.Conversation;
 import com.st.QSB.news.model.entity.CustomMessage;
 import com.st.QSB.news.model.entity.MessageFactory;
 import com.st.QSB.news.model.entity.NomalConversation;
@@ -21,7 +20,6 @@ import com.st.QSB.news.model.event.AccountsEvent;
 import com.st.QSB.news.presenter.ConversationPresenter;
 import com.st.QSB.news.ui.adapter.ConversationAdapter;
 import com.st.QSB.news.ui.widget.ConversationView;
-import com.st.QSB.news.ui.widget.TemplateTitle;
 import com.st.QSB.news.utils.PushUtil;
 import com.st.SQB.R;
 import com.tencent.TIMConversation;

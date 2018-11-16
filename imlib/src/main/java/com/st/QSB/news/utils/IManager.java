@@ -20,8 +20,8 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
     private int SDK_APPID;
     private int ACCOUNT_TYPE;
     private static IManager manager = new IManager();
-    private String userId;
-    private String userSig;
+    private String userId;  //自己的用户id
+    private String userSig; //自己的im签名
 
     private boolean managerVer = false;  //是否是管理员版本
 
