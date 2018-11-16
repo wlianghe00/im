@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.st.QSB.news.model.event.FriendshipEvent;
+import com.st.QSB.news.model.event.MessageEvent;
 import com.st.QSB.news.model.event.RefreshEvent;
 import com.tencent.TIMManager;
 import com.tencent.TIMOfflinePushListener;
@@ -87,6 +88,8 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
             public void onSuccess(Object data) {
                 Log.e(IManager.class.getSimpleName(),"IM帐号登录成功,id:" + id + "---userSig:" + userSig);
 //                EventBus.getDefault().post(new IMLoginEvent(ISATAppConfig.LOAD_SUCCESS));
+                PushUtil.getInstance();
+                MessageEvent.getInstance();
             }
 
             @Override

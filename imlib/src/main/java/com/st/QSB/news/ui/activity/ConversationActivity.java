@@ -20,7 +20,6 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         selfAva = intent.getStringExtra("selfAva");
-        selfAva = "http://img.wangyuedaojia.com/FoHmpHqGfAj208UO85z2GVp2347U";
         String userId = TIMManager.getInstance().getLoginUser();
         if (TextUtils.isEmpty(userId)) {//
             Toast.makeText(this, "IM未登录，请稍后再试", Toast.LENGTH_SHORT).show();

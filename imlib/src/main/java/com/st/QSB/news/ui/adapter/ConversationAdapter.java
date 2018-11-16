@@ -61,7 +61,7 @@ public class ConversationAdapter extends ArrayAdapter<NomalConversation> {
         viewHolder.tvName.setText(data.getName());
         String ava = data.getAvatar();
         if(TextUtils.isEmpty(ava)) ava = "";
-        Glide.with(view.getContext()).load(Uri.parse(ava)).diskCacheStrategy(DiskCacheStrategy.RESULT).placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.avatar);
+        Glide.with(view.getContext()).load(Uri.parse(ava)).error(R.drawable.ic_head).into(viewHolder.avatar);
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtils.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();

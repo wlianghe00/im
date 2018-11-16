@@ -91,10 +91,8 @@ public class ChatAdapter extends ArrayAdapter<Message> {
 
         if(TextUtils.isEmpty(this.rightAva)) this.rightAva = "";
         if(TextUtils.isEmpty(this.leftAva)) this.leftAva = "";
-        Glide.with(view.getContext()).load(Uri.parse(leftAva)).diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.leftAvatar);
-        Glide.with(view.getContext()).load(Uri.parse(rightAva)).diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .placeholder(R.drawable.ic_head).error(R.drawable.ic_head).into(viewHolder.rightAvatar);
+        Glide.with(view.getContext()).load(Uri.parse(leftAva)).error(R.drawable.ic_head).into(viewHolder.leftAvatar);
+        Glide.with(view.getContext()).load(Uri.parse(rightAva)).error(R.drawable.ic_head).into(viewHolder.rightAvatar);
         return view;
     }
 
