@@ -23,6 +23,7 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
     private static IManager manager = new IManager();
     private String userId;  //自己的用户id
     private String userSig; //自己的im签名
+    ILiveCallBack callBack;
 
     private boolean managerVer = false;  //是否是管理员版本
 
@@ -64,25 +65,26 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
         }
     }
 
-    public void initTim(String userId, String userSig) {
+    public void initTim(String userId, String userSig, ILiveCallBack callBack) {
         this.userId = userId;
         this.userSig = userSig;
+        this.callBack = callBack;
         Log.e(IManager.class.getSimpleName(), "开始初始化腾讯im:" + userId + "---" + userSig);
         ILiveSDK.getInstance().initSdk(application.getApplicationContext(), SDK_APPID, ACCOUNT_TYPE);
         RefreshEvent.getInstance();  //设置刷新监听
         //登录之前要初始化群和好友关系链缓存
         FriendshipEvent.getInstance().init();
         ILiveLoginManager.getInstance().setUserStatusListener(this);
-        loginSDK(userId, userSig);
+        loginSDK(userId, userSig, callBack);
     }
 
     public void initTim() {
         if(!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(userSig)) {
-            initTim(userId, userSig);
+            initTim(userId, userSig, callBack);
         }
     }
 
-    private void loginSDK(final String id, final String userSig) {
+    private void loginSDK(final String id, final String userSig, final ILiveCallBack callBack) {
         ILiveLoginManager.getInstance().iLiveLogin(id, userSig, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
@@ -90,12 +92,18 @@ public class IManager implements ILiveLoginManager.TILVBStatusListener {
 //                EventBus.getDefault().post(new IMLoginEvent(ISATAppConfig.LOAD_SUCCESS));
                 PushUtil.getInstance();
                 MessageEvent.getInstance();
+                if(callBack != null) {
+                    callBack.onSuccess(data);
+                }
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 Log.e(IManager.class.getSimpleName(),"IM帐号登录失败," + module + "--" + errCode + "--" + errMsg);
 //                EventBus.getDefault().post(new IMLoginEvent(ISATAppConfig.LOAD_FAIL));
+                if(callBack != null) {
+                    callBack.onError(module, errCode, errMsg);
+                }
             }
         });
     }

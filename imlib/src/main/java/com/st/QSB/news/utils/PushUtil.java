@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.st.QSB.news.model.entity.CustomMessage;
@@ -17,6 +18,7 @@ import com.st.QSB.news.ui.activity.ConversationActivity;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupReceiveMessageOpt;
 import com.tencent.TIMMessage;
+import com.tencent.TIMUserProfile;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -57,7 +59,11 @@ public class PushUtil implements Observer {
         String senderStr, contentStr;
         Message message = MessageFactory.getMessage(msg);
         if (message == null) return;
-        senderStr = message.getSender();
+        TIMUserProfile userProfile = msg.getSenderProfile();
+        senderStr = userProfile.getNickName();
+        if(TextUtils.isEmpty(senderStr)) {
+            senderStr = message.getSender();
+        }
         contentStr = message.getSummary();
         Log.d(TAG, "recv msg " + contentStr);
         NotificationManager mNotificationManager = (NotificationManager) application.getSystemService(Context.NOTIFICATION_SERVICE);

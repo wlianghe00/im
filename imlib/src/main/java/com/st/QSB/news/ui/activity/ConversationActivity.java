@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.st.QSB.news.ui.fragment.ConversationFragment;
 import com.st.QSB.news.utils.IManager;
-import com.tencent.TIMManager;
+import com.tencent.ilivesdk.ILiveSDK;
 
 public class ConversationActivity extends AppCompatActivity {
     String selfAva;
@@ -20,8 +19,7 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         selfAva = intent.getStringExtra("selfAva");
-        String userId = TIMManager.getInstance().getLoginUser();
-        if (TextUtils.isEmpty(userId)) {//
+        if (!ILiveSDK.getInstance().getLoginEngine().isLogin()) {//
             Toast.makeText(this, "IM未登录，请稍后再试", Toast.LENGTH_SHORT).show();
             IManager.getInstance().initTim();
             new Handler().postDelayed(new Runnable() {
