@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.st.SQB.R;
 
@@ -43,6 +44,8 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
     private TextView voicePanel;
     private LinearLayout ll_voice;
     private final int REQUEST_CODE_ASK_PERMISSIONS = 100;
+
+    private boolean canChat = true;
 
 
     public ChatInput(Context context, AttributeSet attrs) {
@@ -268,22 +271,26 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         Activity activity = (Activity) getContext();
         int id = v.getId();
         if (id == R.id.btn_send) {
+            if(!checkCanChat()) return;
             chatView.sendText();
         }
         if (id == R.id.btn_add) {
             updateView(inputMode == InputMode.MORE ? InputMode.TEXT : InputMode.MORE);
         }
         if (id == R.id.btn_photo) {
+            if(!checkCanChat()) return;
             if (activity != null && requestCamera(activity)) {
                 chatView.sendPhoto();
             }
         }
         if (id == R.id.btn_image) {
+            if(!checkCanChat()) return;
             if (activity != null && requestStorage(activity)) {
                 chatView.sendImage();
             }
         }
         if (id == R.id.btn_voice) {
+            if(!checkCanChat()) return;
             if (activity != null && requestAudio(activity)) {
                 updateView(InputMode.VOICE);
             }
@@ -292,6 +299,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
             updateView(InputMode.TEXT);
         }
         if (id == R.id.btn_video) {
+            if(!checkCanChat()) return;
             if (getContext() instanceof FragmentActivity) {
                 FragmentActivity fragmentActivity = (FragmentActivity) getContext();
                 if (requestVideo(fragmentActivity)) {
@@ -299,6 +307,17 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
                 }
             }
         }
+    }
+
+    public void setCanChat(boolean canChat) {
+        this.canChat = canChat;
+    }
+
+    public boolean checkCanChat() {
+        if(!canChat) {
+            Toast.makeText(getContext(), "订单已结束，无法发送消息，如有疑问请联系在线客服", Toast.LENGTH_SHORT).show();
+        }
+        return canChat;
     }
 
 

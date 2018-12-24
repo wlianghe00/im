@@ -28,6 +28,7 @@ import com.st.QSB.news.model.entity.VideoMessage;
 import com.st.QSB.news.model.entity.VoiceMessage;
 import com.st.QSB.news.model.event.AccountRequestEvent;
 import com.st.QSB.news.model.event.AccountsEvent;
+import com.st.QSB.news.model.event.ChatEvent;
 import com.st.QSB.news.presenter.ChatPresenter;
 import com.st.QSB.news.ui.adapter.ChatAdapter;
 import com.st.QSB.news.ui.widget.ChatInput;
@@ -71,6 +72,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
     private int userType;
     private String selfAav;
+
 
     public static void navToChat(Context context, String identify, TIMConversationType type, int userType, String selfAva) {
         Intent intent = new Intent(context, ChatActivity.class);
@@ -197,6 +199,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                     setTitle(conversation.name);
                 }
             }
+        }
+    }
+
+    @Subscribe
+    public void onEvent(ChatEvent event) {
+        if(input != null) {
+            input.setCanChat(event.canChat);
         }
     }
 
